@@ -1,10 +1,21 @@
 import './index.scss'
-import { Card, Form, Input, Button, Checkbox } from "antd"
+import { Card, Form, Input, Button, message } from "antd"
 import logo from '@/assets/logo.png'
+import { useDispatch } from 'react-redux'
+import { fetchLogin } from '@/store/modules/user'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-    const onFinish = (values) => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const onFinish = async (values) => {
         console.log(values);
+        // 触发异步action fetchLogin
+        await dispatch(fetchLogin(values))
+        // 1. 跳转到首页
+        navigate('/')
+        // 2. 提示一下用户
+        message.success('登陆成功')
     }
     return (
         <div className="login">
@@ -36,11 +47,6 @@ const Login = () => {
                             },
                         ]}>
                         <Input size="large" placeholder="请输入验证码" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Checkbox className="login-checkbox-label">
-                            我已阅读并同意「用户协议」和「隐私条款」
-                        </Checkbox>
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" size="large" block>
