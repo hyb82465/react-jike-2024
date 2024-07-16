@@ -1,35 +1,21 @@
-import * as echarts from 'echarts';
-import { useEffect, useRef } from 'react';
+import BarChart from "./components/BarChart"
 
 const Home = () => {
-    const chartRef = useRef(null)
-    useEffect(() => {
-        //保证dom可用 才进行图表渲染
-        // 1. 获取渲染图表的dom节点
-        // const chartDom = document.getElementById('main')
-        const chartDom = chartRef.current
-        // 2. 图标初始化生成图表实例对象
-        const myChart = echarts.init(chartDom);
-        // 3. 准备图标参数
-        const option = {
-            xAxis: {
-                type: 'category',
-                data: ['Vue', 'React', 'Angular']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                    data: [10, 40, 70],
-                    type: 'bar'
-                }
-            ]
-        };
-        // 4. 使用图表参数完成图表的渲染
-        option && myChart.setOption(option);
-    }, [])
-    return <div><div ref={chartRef} style={{ width: '500px', height: '400px' }}></div></div>
+    const newData1 = {
+        categories: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C#'],
+        values: [80, 50, 90, 80, 70]
+    }
+    const newData2 = {
+        categories: ['Html', 'Css', 'JavaScript'],
+        values: [60, 80, 90]
+    }
+    return (
+        <div>
+            <BarChart title={'前端三大框架满意度'} />
+            <BarChart title={'五大工具使用度'} data={newData1} />
+            <BarChart title={'前端基础工具使用频率'} data={newData2} />
+        </div>
+    )
 }
 
 export default Home
