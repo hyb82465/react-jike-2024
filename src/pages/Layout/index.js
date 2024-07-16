@@ -6,11 +6,17 @@ import {
     LogoutOutlined
 } from '@ant-design/icons'
 import './index.scss'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 const { Header, Sider } = Layout
 
 const GeekLayout = () => {
+    const navigate = useNavigate()
+    const onMenuClick = (route) => {
+        console.log(route);
+        const path = route.key
+        navigate(path)
+    }
     return (
         <Layout>
             <Header className="header">
@@ -29,16 +35,17 @@ const GeekLayout = () => {
                     <Menu
                         mode="inline"
                         theme="dark"
-                        defaultSelectedKeys={['1']}
+                        defaultSelectedKeys={['/']}
+                        onClick={onMenuClick}
                         style={{ height: '100%', borderRight: 0 }}
                     >
-                        <Menu.Item icon={<HomeOutlined />} key="1">
+                        <Menu.Item icon={<HomeOutlined />} key="/">
                             首页
                         </Menu.Item>
-                        <Menu.Item icon={<DiffOutlined />} key="2">
+                        <Menu.Item icon={<DiffOutlined />} key="/article">
                             文章管理
                         </Menu.Item>
-                        <Menu.Item icon={<EditOutlined />} key="3">
+                        <Menu.Item icon={<EditOutlined />} key="/publish">
                             创建文章
                         </Menu.Item>
                     </Menu>
