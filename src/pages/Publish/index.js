@@ -50,6 +50,12 @@ const Publish = () => {
         // 2. 调用接口提交
         createArticleAPI(reqData)
     }
+
+    const [imageList, setImageList] = useState([])
+    const onChange = (value) => {
+        console.log('正在上传中', value);
+        setImageList(value.fileList)
+    }
     return (
         <div className="publish">
             <Card
@@ -94,11 +100,17 @@ const Publish = () => {
                                 <Radio value={0}>无图</Radio>
                             </Radio.Group>
                         </Form.Item>
+                        {/* 
+                            listType：决定选择文件框的外观样式
+                            showUploadList：控制显示上传列表
+                        */}
                         <Upload
                             name="image"
                             listType="picture-card"
                             className="avatar-uploader"
                             showUploadList
+                            action="http://geek.itheima.net/v1_0/upload"
+                            onChange={onChange}
                         >
                             <div style={{ marginTop: 8 }}>
                                 <PlusOutlined />
