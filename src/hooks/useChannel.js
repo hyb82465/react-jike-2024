@@ -16,7 +16,9 @@ function useChannel() {
         getChannelList()
     }, [])
     // 2. 把组件中要用到的数据return出去
-    return channelList
+    return {
+        channelList
+    }
 }
 
 export { useChannel }
