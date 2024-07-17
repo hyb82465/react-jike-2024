@@ -16,7 +16,6 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useEffect, useState } from 'react'
 import { createArticleAPI, getChannelAPI } from '@/apis/article'
-import { Content } from 'antd/es/layout/layout'
 
 const { Option } = Select
 
@@ -118,6 +117,7 @@ const Publish = () => {
                             showUploadList
                             action="http://geek.itheima.net/v1_0/upload"
                             onChange={onChange}
+                            maxCount={imageType}
                         >
                             <div style={{ marginTop: 8 }}>
                                 <PlusOutlined />
