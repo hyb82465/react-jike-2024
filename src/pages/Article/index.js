@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select } from 'antd'
+import { Card, Breadcrumb, Form, Button, Radio, DatePicker, Select, Popconfirm } from 'antd'
 // 时间选择器汉化包
 import locale from 'antd/es/date-picker/locale/zh_CN'
 
@@ -8,7 +8,7 @@ import { Table, Tag, Space } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import img404 from '@/assets/error.png'
 import { useChannel } from '@/hooks/useChannel'
-import { getArticleAPI } from '@/apis/article'
+import { deleteArticleAPI, getArticleAPI } from '@/apis/article'
 import { useEffect, useState } from 'react'
 
 const { Option } = Select
@@ -66,12 +66,20 @@ const Article = () => {
                 return (
                     <Space size="middle">
                         <Button type="primary" shape="circle" icon={<EditOutlined />} />
-                        <Button
-                            type="primary"
-                            danger
-                            shape="circle"
-                            icon={<DeleteOutlined />}
-                        />
+                        <Popconfirm
+                            title="删除文章"
+                            description="确认要删除当前文章吗?"
+                            onConfirm={() => onConfirm(data)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button
+                                type="primary"
+                                danger
+                                shape="circle"
+                                icon={<DeleteOutlined />}
+                            />
+                        </Popconfirm>
                     </Space>
                 )
             }
@@ -103,7 +111,6 @@ const Article = () => {
 
     // 2. 获取当前的筛选数据
     const onFinish = (formValue) => {
-        console.log(formValue);
         // 3. 把表单收集到的数据放到参数中(不可变的方式)
         setReqData({
             ...reqData,
@@ -119,11 +126,18 @@ const Article = () => {
 
     // 分页
     const onPageChange = (page) => {
-        console.log(page)
         // 修改参数依赖项 引发数据的重新获取列表渲染
         setReqData({
             ...reqData,
             page
+        })
+    }
+
+    // 删除
+    const onConfirm = async (data) => {
+        await deleteArticleAPI(data.id)
+        setReqData({
+            ...reqData
         })
     }
 
