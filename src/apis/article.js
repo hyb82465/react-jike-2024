@@ -28,9 +28,18 @@ export function getArticleAPI(params) {
     })
 }
 
+// 删除文章
 export function deleteArticleAPI(id) {
     return request({
         url: `/mp/articles/${id}`,
         method: 'DELETE'
+    })
+}
+
+// 获取文章详情
+export function getArticleById(id) {
+    return request({
+        url: `/mp/articles/${id}`,
+        method: 'GET'
     })
 }
