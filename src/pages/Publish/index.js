@@ -11,12 +11,12 @@ import {
     message
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import './index.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useEffect, useState } from 'react'
-import { createArticleAPI, getArticleById } from '@/apis/article'
+import { createArticleAPI, getArticleById, updateArticleAPI } from '@/apis/article'
 import { useChannel } from '@/hooks/useChannel'
 
 const { Option } = Select
@@ -24,7 +24,7 @@ const { Option } = Select
 const Publish = () => {
     // 获取频道列表
     const { channelList } = useChannel()
-
+    const navigate = useNavigate()
     // 提交表单
     const onFinish = (formValue) => {
         console.log(formValue);
@@ -37,12 +37,28 @@ const Publish = () => {
             content,
             cover: {
                 type: imageType, //封面模式
-                images: imageList.map(item => item.response.data.url) //图片列表
+                // 这里的url处理逻辑只是在新增的时候的逻辑
+                //
+                images: imageList.map(item => {
+                    if (item.response) {
+                        return item.response.data.url
+                    } else {
+                        return item.url
+                    }
+                }) //图片列表
             },
             channel_id
         }
         // 2. 调用接口提交
-        createArticleAPI(reqData)
+        // 处理 调用不同的接口 新增状态-新增接口 编辑状态-更新接口
+        if (articleId) {
+            // 更新接口
+            updateArticleAPI({ ...reqData, id: articleId })
+        } else {
+            //新增接口
+            createArticleAPI(reqData)
+        }
+        navigate('/article')
     }
     //上传回调
     const [imageList, setImageList] = useState([])
