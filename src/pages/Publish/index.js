@@ -82,7 +82,8 @@ const Publish = () => {
                 return { url }
             }))
         }
-        getArticleDetail()
+        // 只有有id的时候才能调用此函数
+        articleId && getArticleDetail()
         // 2.调用实例方法 完成回填
     }, [articleId, form])
 
@@ -90,12 +91,11 @@ const Publish = () => {
         <div className="publish">
             <Card
                 title={
-                    <Breadcrumb separator=">">
-                        <Breadcrumb.Item>
-                            <Link to="/">首页</Link>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>发布文章</Breadcrumb.Item>
-                    </Breadcrumb>
+                    <Breadcrumb items={[
+                        { title: <Link to={'/'}>首页</Link> },
+                        { title: `${articleId ? '编辑' : '发布'}文章` }
+                    ]}
+                    />
                 }
             >
                 <Form
